@@ -515,40 +515,29 @@ export default function SkdrFilterBar({
         </form>
       ) : (
         /* Collapsed Quick Chips Bar (Saves screen real estate on mobile) */
-        <div className="flex items-center justify-between pt-2.5 gap-2 overflow-x-auto no-scrollbar">
-          <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5 text-xs">
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-teal-50 border border-teal-200 text-[#007067] font-bold text-[11px] flex-shrink-0">
-              <Radio className="w-3 h-3 text-[#007067]" />
-              <span>
-                {draftSumber === "all"
-                  ? "Semua Sumber"
-                  : draftSumber === "ebs"
-                  ? "EBS"
-                  : "Kasus PE"}
-              </span>
+        <div className="flex items-center pt-2.5 gap-1.5 overflow-x-auto no-scrollbar text-xs">
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-teal-50 border border-teal-200 text-[#007067] font-bold text-[11px] flex-shrink-0">
+            <Radio className="w-3 h-3 text-[#007067]" />
+            <span>
+              {draftSumber === "all"
+                ? "Semua Sumber"
+                : draftSumber === "ebs"
+                ? "EBS"
+                : "Kasus PE"}
             </span>
+          </span>
 
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-700 font-semibold text-[11px] flex-shrink-0">
-              <Calendar className="w-3 h-3 text-slate-500" />
-              <span>
-                M{draftStartWeek}&ndash;M{draftEndWeek} {draftEndYear}
-              </span>
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-700 font-semibold text-[11px] flex-shrink-0">
+            <Calendar className="w-3 h-3 text-slate-500" />
+            <span>
+              M{draftStartWeek}&ndash;M{draftEndWeek} {draftEndYear}
             </span>
+          </span>
 
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-700 font-medium text-[11px] flex-shrink-0 truncate max-w-[140px]">
-              <Map className="w-3 h-3 text-slate-500" />
-              <span className="truncate">{draftProvince}</span>
-            </span>
-          </div>
-
-          <button
-            type="button"
-            onClick={() => setIsExpanded(true)}
-            className="flex items-center gap-1 px-3 py-1 rounded-xl bg-[#007067] text-white text-xs font-bold transition-all flex-shrink-0 shadow-xs cursor-pointer hover:bg-[#005e57]"
-          >
-            <Filter className="w-3 h-3" />
-            <span>Ubah</span>
-          </button>
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-700 font-medium text-[11px] flex-shrink-0 truncate max-w-[160px]">
+            <Map className="w-3 h-3 text-slate-500" />
+            <span className="truncate">{draftProvince}</span>
+          </span>
         </div>
       )}
     </div>

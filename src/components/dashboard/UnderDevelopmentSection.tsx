@@ -7,12 +7,14 @@ interface UnderDevelopmentSectionProps {
   title: string;
   description: string;
   onBackToRingkasan: () => void;
+  buttonLabel?: string;
 }
 
 export default function UnderDevelopmentSection({
   title,
   description,
   onBackToRingkasan,
+  buttonLabel = "Kembali ke Ringkasan",
 }: UnderDevelopmentSectionProps) {
   return (
     <section className="w-full space-y-4">
@@ -48,7 +50,7 @@ export default function UnderDevelopmentSection({
           className="mt-6 inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#007067] hover:bg-[#005e57] active:bg-[#004e47] text-white text-xs font-bold shadow-xs transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
-          <span>Kembali ke Ringkasan</span>
+          <span>{buttonLabel}</span>
         </button>
       </div>
     </section>
