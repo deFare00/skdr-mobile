@@ -7,6 +7,7 @@ import ExecutiveSummary from "./dashboard/ExecutiveSummary";
 import DiseaseCarousel from "./dashboard/DiseaseCarousel";
 import EbsUnitPanel from "./dashboard/EbsUnitPanel";
 import UnderDevelopmentSection from "./dashboard/UnderDevelopmentSection";
+import TataKelolaSection from "./tatakelola/TataKelolaSection";
 import SectionNav, { DashboardSectionTab } from "./dashboard/SectionNav";
 import { RefreshCw, ArrowUp, ChevronLeft, ChevronRight, LayoutGrid, Shield } from "lucide-react";
 
@@ -311,12 +312,7 @@ export default function MainDashboard({
             </div>
           </>
         ) : (
-          <UnderDevelopmentSection
-            title="Tata Kelola"
-            description="Pengelolaan Form Penyelidikan Epidemiologi (PE), master data wilayah & fasilitas pelayanan kesehatan, sinkronisasi integrasi, dan akses berbasis peran."
-            buttonLabel="Kembali ke Dasbor"
-            onBackToRingkasan={() => setActiveTopMenu("dasbor")}
-          />
+          <TataKelolaSection username={username} />
         )}
       </main>
 
