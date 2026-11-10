@@ -4,6 +4,8 @@ import React, { useState, useEffect, useRef } from "react";
 import SkdrHeader from "./dashboard/SkdrHeader";
 import SkdrFilterBar from "./dashboard/SkdrFilterBar";
 import ExecutiveSummary from "./dashboard/ExecutiveSummary";
+import DiseaseCarousel from "./dashboard/DiseaseCarousel";
+import EbsUnitPanel from "./dashboard/EbsUnitPanel";
 import AlertSkdrSections from "./dashboard/AlertSkdrSections";
 import DiseaseTable from "./dashboard/DiseaseTable";
 import EpiCurveSection from "./dashboard/EpiCurveSection";
@@ -267,8 +269,8 @@ export default function MainDashboard({
             WebkitOverflowScrolling: "touch",
           }}
         >
-          {/* HALAMAN 1 (Tab Ringkasan): KPI Cards dengan chart tren mingguan */}
-          <div className="w-full min-w-full flex-shrink-0 snap-center snap-always">
+          {/* HALAMAN 1 (Tab Ringkasan): KPI Cards, Ringkasan per penyakit, & Unit pelapor EBS */}
+          <div className="w-full min-w-full flex-shrink-0 snap-center snap-always space-y-6">
             <ExecutiveSummary
               sumber={sumber}
               startYear={startYear}
@@ -278,6 +280,14 @@ export default function MainDashboard({
               selectedProvince={selectedProvince}
               selectedDisease={selectedDisease}
             />
+            <DiseaseCarousel
+              sumber={sumber}
+              selectedCategory={selectedCategory}
+              selectedDisease={selectedDisease}
+            />
+            {sumber !== "pe" ? (
+              <EbsUnitPanel selectedUnitFilter={selectedUnit} />
+            ) : null}
           </div>
 
           {/* HALAMAN 2: Peringatan Dini (Alerts) & Tabel Kompilasi 24 Penyakit */}
