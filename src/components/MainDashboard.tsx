@@ -6,13 +6,7 @@ import SkdrFilterBar from "./dashboard/SkdrFilterBar";
 import ExecutiveSummary from "./dashboard/ExecutiveSummary";
 import DiseaseCarousel from "./dashboard/DiseaseCarousel";
 import EbsUnitPanel from "./dashboard/EbsUnitPanel";
-import AlertSkdrSections from "./dashboard/AlertSkdrSections";
-import DiseaseTable from "./dashboard/DiseaseTable";
-import EpiCurveSection from "./dashboard/EpiCurveSection";
-import TrendHeatmap from "./dashboard/TrendHeatmap";
-import SpatialMapSection from "./dashboard/SpatialMapSection";
-import EbsPanels from "./dashboard/EbsPanels";
-import KlasterLabSection from "./dashboard/KlasterLabSection";
+import UnderDevelopmentSection from "./dashboard/UnderDevelopmentSection";
 import SectionNav, { DashboardSectionTab } from "./dashboard/SectionNav";
 import { RefreshCw, ArrowUp, ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -28,24 +22,44 @@ const SECTION_PAGES: { id: DashboardSectionTab; title: string; subtitle: string 
     subtitle: "KPI utama Sinyal EBS, Kasus PE, Kematian, dan Provinsi Terdampak",
   },
   {
-    id: "tabel_alerts",
-    title: "Peringatan Dini Sinyal EBS & Tabel 24 Penyakit",
-    subtitle: "Daftar sinyal EBS dan kompilasi data kasus PE",
+    id: "cfr",
+    title: "CFR",
+    subtitle: "Analisis Case Fatality Rate (CFR) per penyakit dengan interval kepercayaan 95%.",
   },
   {
-    id: "kurva_tren",
-    title: "Kurva Epidemiologi & Matriks Tren",
-    subtitle: "Kurva kasus mingguan dan heatmap intensitas lonjakan",
+    id: "alert",
+    title: "Alert",
+    subtitle: "Daftar peringatan dini, sinyal alert SKDR mingguan, dan status verifikasi lapangan.",
   },
   {
-    id: "peta_spasial",
-    title: "Peta Spasial Sebaran Wilayah",
-    subtitle: "Sebaran risiko sinyal epidemiologi 38 provinsi",
+    id: "t717",
+    title: "7-1-7",
+    subtitle: "Indikator ketepatan waktu deteksi ≤ 7 hari, notifikasi ≤ 1 hari, dan respons awal ≤ 7 hari.",
   },
   {
-    id: "klaster_ebs",
-    title: "Sinyal EBS, Klaster & Laboratorium",
-    subtitle: "Surveilans rumor, penyelidikan klaster, dan spesimen NAR",
+    id: "laboratorium",
+    title: "Laboratorium",
+    subtitle: "Matriks pemeriksaan spesimen dan hasil uji laboratorium penyakit menular.",
+  },
+  {
+    id: "sebaran_wilayah",
+    title: "Sebaran Wilayah",
+    subtitle: "Peta interaktif dan sebaran sinyal EBS serta kasus PE di 38 provinsi Indonesia.",
+  },
+  {
+    id: "tren",
+    title: "Tren",
+    subtitle: "Matriks heatmap perbandingan tren mingguan dan pertumbuhan kasus antar periode.",
+  },
+  {
+    id: "klaster_epi_curve",
+    title: "Klaster & EPI Curve",
+    subtitle: "Pemantauan klaster kejadian luar biasa dan kurva epidemiologi mingguan.",
+  },
+  {
+    id: "nar_skdr",
+    title: "NAR-SKDR",
+    subtitle: "Integrasi data surveilans spesimen NAR dengan sistem pelaporan SKDR nasional.",
   },
 ];
 
@@ -166,8 +180,6 @@ export default function MainDashboard({
     }
   };
 
-  const currentPageInfo = SECTION_PAGES[activeIndex] || SECTION_PAGES[0];
-
   return (
     <div className="min-h-screen min-h-dvh bg-slate-100 flex flex-col font-sans pb-24 no-scrollbar">
       {/* Header */}
@@ -198,66 +210,6 @@ export default function MainDashboard({
         {/* Section Navigation Tabs (Sticky bar) */}
         <SectionNav activeTab={activeSection} onTabChange={handlePageChange} />
 
-        {/* Page Header & Pagination Indicator (displayed on tabs 2-5; Tab Ringkasan renders its own official Ringkasan header) */}
-        {activeSection !== "ringkasan" && (
-          <div className="p-3 mb-3.5 rounded-2xl bg-white border border-slate-200/80 shadow-xs flex items-center justify-between gap-2">
-            <div className="min-w-0">
-              <div className="flex items-center gap-1.5">
-                <span className="w-5 h-5 rounded-full bg-[#007067] text-white flex items-center justify-center text-[10px] font-black flex-shrink-0">
-                  {activeIndex + 1}
-                </span>
-                <h2 className="text-xs sm:text-sm font-extrabold text-slate-900 truncate">
-                  {currentPageInfo.title}
-                </h2>
-              </div>
-              <p className="text-[10px] text-slate-500 mt-0.5 truncate hidden sm:block">
-                {currentPageInfo.subtitle}
-              </p>
-            </div>
-
-            {/* Quick Page Prev/Next Controls */}
-            <div className="flex items-center gap-1 flex-shrink-0">
-              <button
-                type="button"
-                onClick={handlePrevPage}
-                disabled={activeIndex === 0}
-                className="p-1.5 rounded-xl border border-slate-200 hover:bg-slate-50 disabled:opacity-30 cursor-pointer transition-colors"
-                title="Halaman sebelumnya"
-              >
-                <ChevronLeft className="w-4 h-4 text-slate-700" />
-              </button>
-
-              {/* Pagination Number Buttons */}
-              <div className="hidden xs:flex items-center gap-1">
-                {SECTION_PAGES.map((page, idx) => (
-                  <button
-                    key={page.id}
-                    type="button"
-                    onClick={() => handlePageChange(page.id)}
-                    className={`w-6 h-6 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                      activeSection === page.id
-                        ? "bg-[#007067] text-white shadow-xs"
-                        : "text-slate-500 hover:bg-slate-100"
-                    }`}
-                  >
-                    {idx + 1}
-                  </button>
-                ))}
-              </div>
-
-              <button
-                type="button"
-                onClick={handleNextPage}
-                disabled={activeIndex === SECTION_PAGES.length - 1}
-                className="p-1.5 rounded-xl border border-slate-200 hover:bg-slate-50 disabled:opacity-30 cursor-pointer transition-colors"
-                title="Halaman selanjutnya"
-              >
-                <ChevronRight className="w-4 h-4 text-slate-700" />
-              </button>
-            </div>
-          </div>
-        )}
-
         {/* Touch-Slideable Carousel Container (Hidden scrollbar + Snap) */}
         <div
           ref={sliderRef}
@@ -269,7 +221,7 @@ export default function MainDashboard({
             WebkitOverflowScrolling: "touch",
           }}
         >
-          {/* HALAMAN 1 (Tab Ringkasan): KPI Cards, Ringkasan per penyakit, & Unit pelapor EBS */}
+          {/* TAB 1: Ringkasan */}
           <div className="w-full min-w-full flex-shrink-0 snap-center snap-always space-y-6">
             <ExecutiveSummary
               sumber={sumber}
@@ -290,28 +242,19 @@ export default function MainDashboard({
             ) : null}
           </div>
 
-          {/* HALAMAN 2: Peringatan Dini (Alerts) & Tabel Kompilasi 24 Penyakit */}
-          <div className="w-full min-w-full flex-shrink-0 snap-center snap-always">
-            <AlertSkdrSections selectedCategory={selectedCategory} />
-            <DiseaseTable />
-          </div>
-
-          {/* HALAMAN 3: Kurva Epidemiologi (EpiCurve) & Matriks Heatmap Tren */}
-          <div className="w-full min-w-full flex-shrink-0 snap-center snap-always">
-            <EpiCurveSection />
-            <TrendHeatmap />
-          </div>
-
-          {/* HALAMAN 4: Peta Spasial Sebaran Wilayah & Tabel Provinsi */}
-          <div className="w-full min-w-full flex-shrink-0 snap-center snap-always">
-            <SpatialMapSection />
-          </div>
-
-          {/* HALAMAN 5: Sinyal EBS, Klaster Kasus & Laboratorium NAR */}
-          <div className="w-full min-w-full flex-shrink-0 snap-center snap-always">
-            <EbsPanels />
-            <KlasterLabSection />
-          </div>
+          {/* TABS 2-9: CFR, Alert, 7-1-7, Laboratorium, Sebaran Wilayah, Tren, Klaster & EPI Curve, NAR-SKDR */}
+          {SECTION_PAGES.slice(1).map((page) => (
+            <div
+              key={page.id}
+              className="w-full min-w-full flex-shrink-0 snap-center snap-always"
+            >
+              <UnderDevelopmentSection
+                title={page.title}
+                description={page.subtitle}
+                onBackToRingkasan={() => handlePageChange("ringkasan")}
+              />
+            </div>
+          ))}
         </div>
       </main>
 

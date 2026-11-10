@@ -1,20 +1,28 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import {
   LayoutDashboard,
+  Activity,
   AlertTriangle,
-  TrendingUp,
+  Clock,
+  Microscope,
   MapPin,
-  Radio
+  TrendingUp,
+  Layers,
+  Database,
 } from "lucide-react";
 
 export type DashboardSectionTab =
   | "ringkasan"
-  | "tabel_alerts"
-  | "kurva_tren"
-  | "peta_spasial"
-  | "klaster_ebs";
+  | "cfr"
+  | "alert"
+  | "t717"
+  | "laboratorium"
+  | "sebaran_wilayah"
+  | "tren"
+  | "klaster_epi_curve"
+  | "nar_skdr";
 
 interface SectionNavProps {
   activeTab: DashboardSectionTab;
@@ -22,50 +30,77 @@ interface SectionNavProps {
 }
 
 export default function SectionNav({ activeTab, onTabChange }: SectionNavProps) {
+  const btnRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+
+  useEffect(() => {
+    const el = btnRefs.current[activeTab];
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+    }
+  }, [activeTab]);
+
   const tabs = [
     {
       id: "ringkasan" as const,
-      num: 1,
-      label: "1. Ringkasan",
-      shortLabel: "Ringkasan",
+      label: "Ringkasan",
       icon: (active: boolean) => (
         <LayoutDashboard className={`w-3.5 h-3.5 ${active ? "text-white" : "text-[#007067]"}`} />
       ),
     },
     {
-      id: "tabel_alerts" as const,
-      num: 2,
-      label: "2. Sinyal EBS & Tabel",
-      shortLabel: "Sinyal EBS",
+      id: "cfr" as const,
+      label: "CFR",
       icon: (active: boolean) => (
-        <AlertTriangle className={`w-3.5 h-3.5 ${active ? "text-white" : "text-red-500"}`} />
+        <Activity className={`w-3.5 h-3.5 ${active ? "text-white" : "text-rose-500"}`} />
       ),
     },
     {
-      id: "kurva_tren" as const,
-      num: 3,
-      label: "3. Kurva & Heatmap",
-      shortLabel: "Kurva",
+      id: "alert" as const,
+      label: "Alert",
       icon: (active: boolean) => (
-        <TrendingUp className={`w-3.5 h-3.5 ${active ? "text-white" : "text-blue-600"}`} />
+        <AlertTriangle className={`w-3.5 h-3.5 ${active ? "text-white" : "text-[#e8710a]"}`} />
       ),
     },
     {
-      id: "peta_spasial" as const,
-      num: 4,
-      label: "4. Peta Spasial",
-      shortLabel: "Peta",
+      id: "t717" as const,
+      label: "7-1-7",
+      icon: (active: boolean) => (
+        <Clock className={`w-3.5 h-3.5 ${active ? "text-white" : "text-emerald-600"}`} />
+      ),
+    },
+    {
+      id: "laboratorium" as const,
+      label: "Laboratorium",
+      icon: (active: boolean) => (
+        <Microscope className={`w-3.5 h-3.5 ${active ? "text-white" : "text-indigo-600"}`} />
+      ),
+    },
+    {
+      id: "sebaran_wilayah" as const,
+      label: "Sebaran Wilayah",
       icon: (active: boolean) => (
         <MapPin className={`w-3.5 h-3.5 ${active ? "text-white" : "text-teal-600"}`} />
       ),
     },
     {
-      id: "klaster_ebs" as const,
-      num: 5,
-      label: "5. EBS, Klaster & Lab",
-      shortLabel: "EBS & Lab",
+      id: "tren" as const,
+      label: "Tren",
       icon: (active: boolean) => (
-        <Radio className={`w-3.5 h-3.5 ${active ? "text-white" : "text-purple-600"}`} />
+        <TrendingUp className={`w-3.5 h-3.5 ${active ? "text-white" : "text-blue-600"}`} />
+      ),
+    },
+    {
+      id: "klaster_epi_curve" as const,
+      label: "Klaster & EPI Curve",
+      icon: (active: boolean) => (
+        <Layers className={`w-3.5 h-3.5 ${active ? "text-white" : "text-amber-600"}`} />
+      ),
+    },
+    {
+      id: "nar_skdr" as const,
+      label: "NAR-SKDR",
+      icon: (active: boolean) => (
+        <Database className={`w-3.5 h-3.5 ${active ? "text-white" : "text-purple-600"}`} />
       ),
     },
   ];
@@ -78,6 +113,9 @@ export default function SectionNav({ activeTab, onTabChange }: SectionNavProps) 
           return (
             <button
               key={tab.id}
+              ref={(el) => {
+                btnRefs.current[tab.id] = el;
+              }}
               type="button"
               onClick={() => onTabChange(tab.id)}
               className={`flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex-shrink-0 ${
@@ -87,8 +125,7 @@ export default function SectionNav({ activeTab, onTabChange }: SectionNavProps) 
               }`}
             >
               {tab.icon(isActive)}
-              <span className="hidden sm:inline">{tab.label}</span>
-              <span className="sm:hidden">{tab.shortLabel}</span>
+              <span>{tab.label}</span>
             </button>
           );
         })}
