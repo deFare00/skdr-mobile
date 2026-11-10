@@ -26,37 +26,47 @@ export default function SectionNav({ activeTab, onTabChange }: SectionNavProps) 
     {
       id: "ringkasan" as const,
       num: 1,
-      label: "1. Ringkasan & 7-1-7",
+      label: "1. Ringkasan",
       shortLabel: "Ringkasan",
-      icon: <LayoutDashboard className="w-3.5 h-3.5 text-[#007067]" />,
+      icon: (active: boolean) => (
+        <LayoutDashboard className={`w-3.5 h-3.5 ${active ? "text-white" : "text-[#007067]"}`} />
+      ),
     },
     {
       id: "tabel_alerts" as const,
       num: 2,
       label: "2. Sinyal EBS & Tabel",
       shortLabel: "Sinyal EBS",
-      icon: <AlertTriangle className="w-3.5 h-3.5 text-red-500" />,
+      icon: (active: boolean) => (
+        <AlertTriangle className={`w-3.5 h-3.5 ${active ? "text-white" : "text-red-500"}`} />
+      ),
     },
     {
       id: "kurva_tren" as const,
       num: 3,
       label: "3. Kurva & Heatmap",
       shortLabel: "Kurva",
-      icon: <TrendingUp className="w-3.5 h-3.5 text-blue-600" />,
+      icon: (active: boolean) => (
+        <TrendingUp className={`w-3.5 h-3.5 ${active ? "text-white" : "text-blue-600"}`} />
+      ),
     },
     {
       id: "peta_spasial" as const,
       num: 4,
       label: "4. Peta Spasial",
       shortLabel: "Peta",
-      icon: <MapPin className="w-3.5 h-3.5 text-teal-600" />,
+      icon: (active: boolean) => (
+        <MapPin className={`w-3.5 h-3.5 ${active ? "text-white" : "text-teal-600"}`} />
+      ),
     },
     {
       id: "klaster_ebs" as const,
       num: 5,
       label: "5. EBS, Klaster & Lab",
       shortLabel: "EBS & Lab",
-      icon: <Radio className="w-3.5 h-3.5 text-purple-600" />,
+      icon: (active: boolean) => (
+        <Radio className={`w-3.5 h-3.5 ${active ? "text-white" : "text-purple-600"}`} />
+      ),
     },
   ];
 
@@ -76,7 +86,7 @@ export default function SectionNav({ activeTab, onTabChange }: SectionNavProps) 
                   : "bg-white border border-slate-200/80 text-slate-700 hover:bg-slate-50"
               }`}
             >
-              {tab.icon}
+              {tab.icon(isActive)}
               <span className="hidden sm:inline">{tab.label}</span>
               <span className="sm:hidden">{tab.shortLabel}</span>
             </button>

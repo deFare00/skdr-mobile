@@ -4,8 +4,6 @@ import React, { useState, useEffect, useRef } from "react";
 import SkdrHeader from "./dashboard/SkdrHeader";
 import SkdrFilterBar from "./dashboard/SkdrFilterBar";
 import ExecutiveSummary from "./dashboard/ExecutiveSummary";
-import T717 from "./dashboard/T717";
-import DiseaseCarousel from "./dashboard/DiseaseCarousel";
 import AlertSkdrSections from "./dashboard/AlertSkdrSections";
 import DiseaseTable from "./dashboard/DiseaseTable";
 import EpiCurveSection from "./dashboard/EpiCurveSection";
@@ -24,8 +22,8 @@ interface MainDashboardProps {
 const SECTION_PAGES: { id: DashboardSectionTab; title: string; subtitle: string }[] = [
   {
     id: "ringkasan",
-    title: "Ringkasan Eksekutif & Indikator 7-1-7",
-    subtitle: "KPI utama, capaian 7-1-7, dan penyakit prioritas KLB",
+    title: "Ringkasan",
+    subtitle: "KPI utama Sinyal EBS, Kasus PE, Kematian, dan Provinsi Terdampak",
   },
   {
     id: "tabel_alerts",
@@ -198,63 +196,65 @@ export default function MainDashboard({
         {/* Section Navigation Tabs (Sticky bar) */}
         <SectionNav activeTab={activeSection} onTabChange={handlePageChange} />
 
-        {/* Page Header & Pagination Indicator */}
-        <div className="p-3 mb-3.5 rounded-2xl bg-white border border-slate-200/80 shadow-xs flex items-center justify-between gap-2">
-          <div className="min-w-0">
-            <div className="flex items-center gap-1.5">
-              <span className="w-5 h-5 rounded-full bg-[#007067] text-white flex items-center justify-center text-[10px] font-black flex-shrink-0">
-                {activeIndex + 1}
-              </span>
-              <h2 className="text-xs sm:text-sm font-extrabold text-slate-900 truncate">
-                {currentPageInfo.title}
-              </h2>
-            </div>
-            <p className="text-[10px] text-slate-500 mt-0.5 truncate hidden sm:block">
-              {currentPageInfo.subtitle}
-            </p>
-          </div>
-
-          {/* Quick Page Prev/Next Controls */}
-          <div className="flex items-center gap-1 flex-shrink-0">
-            <button
-              type="button"
-              onClick={handlePrevPage}
-              disabled={activeIndex === 0}
-              className="p-1.5 rounded-xl border border-slate-200 hover:bg-slate-50 disabled:opacity-30 cursor-pointer transition-colors"
-              title="Halaman sebelumnya"
-            >
-              <ChevronLeft className="w-4 h-4 text-slate-700" />
-            </button>
-
-            {/* Pagination Number Buttons */}
-            <div className="hidden xs:flex items-center gap-1">
-              {SECTION_PAGES.map((page, idx) => (
-                <button
-                  key={page.id}
-                  type="button"
-                  onClick={() => handlePageChange(page.id)}
-                  className={`w-6 h-6 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                    activeSection === page.id
-                      ? "bg-[#007067] text-white shadow-xs"
-                      : "text-slate-500 hover:bg-slate-100"
-                  }`}
-                >
-                  {idx + 1}
-                </button>
-              ))}
+        {/* Page Header & Pagination Indicator (displayed on tabs 2-5; Tab Ringkasan renders its own official Ringkasan header) */}
+        {activeSection !== "ringkasan" && (
+          <div className="p-3 mb-3.5 rounded-2xl bg-white border border-slate-200/80 shadow-xs flex items-center justify-between gap-2">
+            <div className="min-w-0">
+              <div className="flex items-center gap-1.5">
+                <span className="w-5 h-5 rounded-full bg-[#007067] text-white flex items-center justify-center text-[10px] font-black flex-shrink-0">
+                  {activeIndex + 1}
+                </span>
+                <h2 className="text-xs sm:text-sm font-extrabold text-slate-900 truncate">
+                  {currentPageInfo.title}
+                </h2>
+              </div>
+              <p className="text-[10px] text-slate-500 mt-0.5 truncate hidden sm:block">
+                {currentPageInfo.subtitle}
+              </p>
             </div>
 
-            <button
-              type="button"
-              onClick={handleNextPage}
-              disabled={activeIndex === SECTION_PAGES.length - 1}
-              className="p-1.5 rounded-xl border border-slate-200 hover:bg-slate-50 disabled:opacity-30 cursor-pointer transition-colors"
-              title="Halaman selanjutnya"
-            >
-              <ChevronRight className="w-4 h-4 text-slate-700" />
-            </button>
+            {/* Quick Page Prev/Next Controls */}
+            <div className="flex items-center gap-1 flex-shrink-0">
+              <button
+                type="button"
+                onClick={handlePrevPage}
+                disabled={activeIndex === 0}
+                className="p-1.5 rounded-xl border border-slate-200 hover:bg-slate-50 disabled:opacity-30 cursor-pointer transition-colors"
+                title="Halaman sebelumnya"
+              >
+                <ChevronLeft className="w-4 h-4 text-slate-700" />
+              </button>
+
+              {/* Pagination Number Buttons */}
+              <div className="hidden xs:flex items-center gap-1">
+                {SECTION_PAGES.map((page, idx) => (
+                  <button
+                    key={page.id}
+                    type="button"
+                    onClick={() => handlePageChange(page.id)}
+                    className={`w-6 h-6 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                      activeSection === page.id
+                        ? "bg-[#007067] text-white shadow-xs"
+                        : "text-slate-500 hover:bg-slate-100"
+                    }`}
+                  >
+                    {idx + 1}
+                  </button>
+                ))}
+              </div>
+
+              <button
+                type="button"
+                onClick={handleNextPage}
+                disabled={activeIndex === SECTION_PAGES.length - 1}
+                className="p-1.5 rounded-xl border border-slate-200 hover:bg-slate-50 disabled:opacity-30 cursor-pointer transition-colors"
+                title="Halaman selanjutnya"
+              >
+                <ChevronRight className="w-4 h-4 text-slate-700" />
+              </button>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Touch-Slideable Carousel Container (Hidden scrollbar + Snap) */}
         <div
@@ -267,11 +267,17 @@ export default function MainDashboard({
             WebkitOverflowScrolling: "touch",
           }}
         >
-          {/* HALAMAN 1: Ringkasan Eksekutif, Indikator 7-1-7, & Disease Carousel */}
+          {/* HALAMAN 1 (Tab Ringkasan): KPI Cards dengan chart tren mingguan */}
           <div className="w-full min-w-full flex-shrink-0 snap-center snap-always">
-            <ExecutiveSummary />
-            <T717 />
-            <DiseaseCarousel />
+            <ExecutiveSummary
+              sumber={sumber}
+              startYear={startYear}
+              startWeek={startWeek}
+              endYear={endYear}
+              endWeek={endWeek}
+              selectedProvince={selectedProvince}
+              selectedDisease={selectedDisease}
+            />
           </div>
 
           {/* HALAMAN 2: Peringatan Dini (Alerts) & Tabel Kompilasi 24 Penyakit */}

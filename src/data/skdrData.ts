@@ -589,3 +589,154 @@ export const SKDR_HEATMAP_DATA = [
   { disease: "Pneumonia", values: [7, 6, 6, 7, 7, 7, 6, 2], trend: "Tinggi", color: "bg-red-600" },
   { disease: "Malaria", values: [8, 8, 8, 7, 8, 8, 8, 2], trend: "Stabil", color: "bg-emerald-600" },
 ];
+
+export interface Delta24Data {
+  cur: number;
+  prev: number;
+}
+
+export interface RingkasanSummaryData {
+  header: {
+    individualReports: number;
+    ebsAlertsZoonosis: number;
+    ebsAlertsAll: number;
+    startDate: string;
+    endDate: string;
+    scope: string;
+  };
+  kpi: {
+    ebs: {
+      alerts: number;
+      cases: number;
+      deaths: number;
+      provinces: number;
+      kabkota: number;
+      verified: number;
+    };
+    pe: {
+      cases: number;
+      deaths: number;
+      provinces: number;
+      kabkota: number;
+      verified: number;
+    };
+  };
+  kpiTrend: {
+    bucket: "week" | "day";
+    until: string;
+    days: string[];
+    ebs: {
+      alerts: number[];
+      cases: number[];
+      deaths: number[];
+      provinces: number[];
+      d24: {
+        alerts: Delta24Data;
+        cases: Delta24Data;
+        deaths: Delta24Data;
+        provinces: Delta24Data;
+      };
+    };
+    pe: {
+      cases: number[];
+      deaths: number[];
+      provinces: number[];
+      d24: {
+        cases: Delta24Data;
+        deaths: Delta24Data;
+        provinces: Delta24Data;
+      };
+    };
+  };
+}
+
+// Data resmi Ringkasan KPI & Tren Mingguan (M1/2026 - M45/2026)
+export const SKDR_RINGKASAN_SUMMARY: RingkasanSummaryData = {
+  header: {
+    individualReports: 29,
+    ebsAlertsZoonosis: 648,
+    ebsAlertsAll: 42959,
+    startDate: "2026-01-04",
+    endDate: "2026-11-14",
+    scope: "Indonesia",
+  },
+  kpi: {
+    ebs: {
+      alerts: 42959,
+      cases: 84909,
+      deaths: 323,
+      provinces: 37,
+      kabkota: 394,
+      verified: 39702,
+    },
+    pe: {
+      cases: 29,
+      deaths: 0,
+      provinces: 1,
+      kabkota: 1,
+      verified: 29,
+    },
+  },
+  kpiTrend: {
+    bucket: "week",
+    until: "2026-10-12",
+    days: [
+      "2026-01-04", "2026-01-11", "2026-01-18", "2026-01-25", "2026-02-01",
+      "2026-02-08", "2026-02-15", "2026-02-22", "2026-03-01", "2026-03-08",
+      "2026-03-15", "2026-03-22", "2026-03-29", "2026-04-05", "2026-04-12",
+      "2026-04-19", "2026-04-26", "2026-05-03", "2026-05-10", "2026-05-17",
+      "2026-05-24", "2026-05-31", "2026-06-07", "2026-06-14", "2026-06-21",
+      "2026-06-28", "2026-07-05", "2026-07-12", "2026-07-19", "2026-07-26",
+      "2026-08-02", "2026-08-09", "2026-08-16", "2026-08-23", "2026-08-30",
+      "2026-09-06", "2026-09-13", "2026-09-20", "2026-09-27", "2026-10-04",
+      "2026-10-11", "2026-10-18", "2026-10-25", "2026-11-01", "2026-11-08",
+    ],
+    ebs: {
+      alerts: [
+        2652, 2815, 3973, 4079, 4010, 3956, 3193, 4325, 4127, 4211, 2793, 2796,
+        0, 29, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      ],
+      cases: [
+        5092, 4974, 8150, 9312, 8297, 8587, 6245, 8500, 7696, 7862, 5308, 4815,
+        0, 71, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      ],
+      deaths: [
+        21, 13, 24, 25, 28, 57, 20, 45, 25, 21, 12, 32, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0,
+      ],
+      provinces: [
+        33, 35, 36, 34, 35, 34, 33, 33, 34, 36, 34, 33, 0, 8, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0,
+      ],
+      d24: {
+        alerts: { cur: 0, prev: 0 },
+        cases: { cur: 0, prev: 0 },
+        deaths: { cur: 0, prev: 0 },
+        provinces: { cur: 0, prev: 0 },
+      },
+    },
+    pe: {
+      cases: [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29, 0, 0, 0, 0,
+      ],
+      deaths: [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      ],
+      provinces: [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+      ],
+      d24: {
+        cases: { cur: 0, prev: 0 },
+        deaths: { cur: 0, prev: 0 },
+        provinces: { cur: 0, prev: 0 },
+      },
+    },
+  },
+};
