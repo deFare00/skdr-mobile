@@ -452,3 +452,4 @@ export const INITIAL_INDIVIDU_RECORDS: IndividuRecord[] = [
     },
   },
 ];
+
